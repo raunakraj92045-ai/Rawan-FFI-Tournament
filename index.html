@@ -1,15 +1,18 @@
 
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#071426">
 <title>RAWAN FFI TOURNAMENT</title>
 <style>
 *{box-sizing:border-box}
 body{margin:0;background:#071426;color:white;font-family:Arial,sans-serif}
-header{text-align:center;padding:22px 10px;background:linear-gradient(135deg,#092b55,#0759a8);border-bottom:2px solid #16baff}
-header h1{color:#35c8ff;font-size:24px}
+header{text-align:center;padding:20px 10px;background:linear-gradient(135deg,#092b55,#0759a8);border-bottom:2px solid #16baff}
+header h1{color:#35c8ff;font-size:23px;margin:5px}
+header p{font-size:12px}
 section{margin:14px;padding:17px;background:#102746;border:1px solid #1764a5;border-radius:13px}
 h2{color:#36c5ff;margin-top:0}
 button{background:linear-gradient(90deg,#087b35,#16bd62);border:0;color:white;padding:13px;border-radius:9px;font-weight:bold;font-size:14px;cursor:pointer}
@@ -30,6 +33,9 @@ label{font-size:14px;color:#bce5ff}
 .wheel{font-size:90px;text-align:center;transition:transform 2s}
 .small{font-size:12px;color:#a8c7df}
 footer{text-align:center;padding:20px;color:#8ebce5}
+.msg{color:#36c5ff;text-align:center}
+.nav{display:flex;gap:6px;overflow-x:auto;padding:10px}
+.nav button{min-width:75px;font-size:12px;padding:10px}
 </style>
 </head>
 <body>
@@ -39,8 +45,16 @@ footer{text-align:center;padding:20px;color:#8ebce5}
 <p>PLAY FAIR • WIN FAIR</p>
 </header>
 
+<nav class="nav">
+<button onclick="showPage('home')">🏠 Home</button>
+<button onclick="showPage('wallet')">🪙 Wallet</button>
+<button onclick="showPage('profile')">👤 Profile</button>
+<button onclick="showPage('history')">📋 History</button>
+</nav>
+
 <!-- HOME -->
 <div id="home" class="page active">
+
 <section>
 <h2>🏆 Tournament Modes</h2>
 <div class="buttons">
@@ -80,8 +94,8 @@ Cheating means disqualification.
 <h2>🎡 Lucky Spinner</h2>
 <div class="wheel" id="wheel">🎡</div>
 <button id="spin" style="width:100%" onclick="spin()">SPIN NOW</button>
-<p id="result" style="text-align:center;color:#36c5ff">Good luck!</p>
-<p class="small">One free spin per day.</p>
+<p id="result" class="msg">Good luck!</p>
+<p class="small">One free spin per day. Coins are non-cash rewards.</p>
 </section>
 
 <section>
@@ -101,8 +115,8 @@ Cheating means disqualification.
 <section>
 <h2>📢 Telegram Support</h2>
 <div class="buttons">
-<button onclick="window.open('https://t.me/Rawanffitournament14','_blank')">💬 CONTACT ADMIN</button>
-<button onclick="window.open('https://t.me/Rawanffitournamentgroup_14','_blank')">👥 JOIN GROUP</button>
+<button onclick="openTelegram('https://t.me/Rawanffitournament14')">💬 CONTACT ADMIN</button>
+<button onclick="openTelegram('https://t.me/Rawanffitournamentgroup_14')">👥 JOIN GROUP</button>
 </div>
 </section>
 </div>
@@ -154,11 +168,9 @@ Cheating means disqualification.
 <input id="regName" required maxlength="40">
 <label>Free Fire UID</label>
 <input id="regUID" required inputmode="numeric" maxlength="20">
-<label>Contact Number (optional)</label>
-<input id="regContact" type="tel" maxlength="15">
 <button style="width:100%">SUBMIT REGISTRATION</button>
 </form>
-<p class="small">Saved locally on this device, not automatically sent to admin.</p>
+<p class="small">Registration is saved only on this device. Admin confirmation is required.</p>
 </section>
 </div>
 
@@ -171,14 +183,12 @@ Cheating means disqualification.
 <label>Player Name</label>
 <input id="pName" required maxlength="40">
 <label>Free Fire UID</label>
-<input id="pUID" required maxlength="20">
+<input id="pUID" required maxlength="20" inputmode="numeric">
 <label>In-Game Name</label>
 <input id="pIGN" maxlength="40">
-<label>Contact Number (optional)</label>
-<input id="pContact" type="tel" maxlength="15">
 <button style="width:100%">💾 SAVE PROFILE</button>
 </form>
-<p id="profileMsg"></p>
+<p id="profileMsg" class="msg"></p>
 </section>
 </div>
 
@@ -194,46 +204,67 @@ Cheating means disqualification.
 <footer>© RAWAN FFI TOURNAMENT</footer>
 
 <script>
-let balance=Number(localStorage.getItem("rawanCoins")||0);
-let selectedMode="SOLO";
+"use strict";
+
+let balance = Math.max(0,Number(localStorage.getItem("rawanCoins"))||0);
+let selectedMode = "SOLO";
+let spinning = false;
+
+function getData(key,def){
+ try {
+  const v=localStorage.getItem(key);
+  return v===null?def:JSON.parse(v);
+ } catch(e){return def;}
+}
+
+function setData(key,value){
+ try {
+  localStorage.setItem(key,JSON.stringify(value));
+  return true;
+ } catch(e){
+  alert("Storage error! Please check phone storage.");
+  return false;
+ }
+}
 
 function showPage(id){
+ const page=document.getElementById(id);
+ if(!page)return;
  document.querySelectorAll(".page").forEach(p=>p.classList.remove("active"));
- document.getElementById(id).classList.add("active");
+ page.classList.add("active");
  window.scrollTo(0,0);
  if(id==="wallet")updateWallet();
  if(id==="history")loadHistory();
  if(id==="profile")loadProfile();
 }
 
-function getData(key,def){
- try{return JSON.parse(localStorage.getItem(key)||JSON.stringify(def))}
- catch(e){return def}
+function saveBalance(){
+ localStorage.setItem("rawanCoins",String(balance));
+ document.getElementById("homeBalance").textContent=balance;
+ document.getElementById("walletBalance").textContent=balance;
 }
 
-function saveBalance(){
- localStorage.setItem("rawanCoins",balance);
- document.getElementById("homeBalance").textContent=balance;
+function addHistory(amount,message){
+ let h=getData("rawanCoinHistory",[]);
+ h.push({amount,message,date:new Date().toLocaleString()});
+ setData("rawanCoinHistory",h);
 }
 
 function updateWallet(){
- document.getElementById("walletBalance").textContent=balance;
+ saveBalance();
  let h=getData("rawanCoinHistory",[]);
  let el=document.getElementById("coinHistory");
- el.innerHTML="";
- if(!h.length){el.textContent="No transactions yet.";return;}
+ el.replaceChildren();
+ if(!h.length){
+  el.textContent="No transactions yet.";
+  return;
+ }
  h.slice().reverse().forEach(x=>{
   let d=document.createElement("div");
   d.className="card";
   d.textContent=x.message+" | "+x.date;
   el.appendChild(d);
  });
-}
-
-function addHistory(amount,message){
- let h=getData("rawanCoinHistory",[]);
- h.push({amount,message,date:new Date().toLocaleString()});
- localStorage.setItem("rawanCoinHistory",JSON.stringify(h));
 }
 
 function openMode(mode){
@@ -249,19 +280,25 @@ function openRegistration(){
  let p=getData("rawanProfile",{});
  document.getElementById("regName").value=p.name||"";
  document.getElementById("regUID").value=p.uid||"";
- document.getElementById("regContact").value=p.contact||"";
  showPage("registration");
 }
 
 document.getElementById("profileForm").addEventListener("submit",e=>{
  e.preventDefault();
  let p={
- name:document.getElementById("pName").value.trim(),
- uid:document.getElementById("pUID").value.trim(),
- ign:document.getElementById("pIGN").value.trim(),
- contact:document.getElementById("pContact").value.trim()
+  name:document.getElementById("pName").value.trim(),
+  uid:document.getElementById("pUID").value.trim(),
+  ign:document.getElementById("pIGN").value.trim()
  };
- localStorage.setItem("rawanProfile",JSON.stringify(p));
+ if(!p.name||!p.uid){
+  alert("Please enter your name and UID.");
+  return;
+ }
+ if(!/^[0-9]+$/.test(p.uid)){
+  alert("UID must contain numbers only.");
+  return;
+ }
+ if(!setData("rawanProfile",p))return;
  document.getElementById("profileMsg").textContent="✅ Profile saved!";
  loadProfile();
 });
@@ -271,37 +308,41 @@ function loadProfile(){
  document.getElementById("pName").value=p.name||"";
  document.getElementById("pUID").value=p.uid||"";
  document.getElementById("pIGN").value=p.ign||"";
- document.getElementById("pContact").value=p.contact||"";
  document.getElementById("homeName").textContent=p.name||"Player";
 }
 
 document.getElementById("regForm").addEventListener("submit",e=>{
  e.preventDefault();
  let r={
- mode:selectedMode,
- name:document.getElementById("regName").value.trim(),
- uid:document.getElementById("regUID").value.trim(),
- contact:document.getElementById("regContact").value.trim(),
- date:new Date().toLocaleString()
+  mode:selectedMode,
+  name:document.getElementById("regName").value.trim(),
+  uid:document.getElementById("regUID").value.trim(),
+  date:new Date().toLocaleString()
  };
+ if(!r.name||!/^[0-9]+$/.test(r.uid)){
+  alert("Enter a valid name and numeric UID.");
+  return;
+ }
  let records=getData("rawanRegistrations",[]);
  if(records.some(x=>x.uid===r.uid)){
- alert("This UID is already registered!");
- return;
+  alert("This UID is already registered on this device!");
+  return;
  }
  records.push(r);
- localStorage.setItem("rawanRegistrations",JSON.stringify(records));
+ if(!setData("rawanRegistrations",records))return;
  alert("Registration saved! Admin confirmation is required.");
  showPage("history");
- loadHistory();
 });
 
 function loadHistory(){
  let records=getData("rawanRegistrations",[]);
  let el=document.getElementById("historyList");
- el.innerHTML="";
- if(!records.length){el.textContent="No registrations yet.";return;}
- records.forEach(r=>{
+ el.replaceChildren();
+ if(!records.length){
+  el.textContent="No registrations yet.";
+  return;
+ }
+ records.slice().reverse().forEach(r=>{
   let d=document.createElement("div");
   d.className="card";
   d.textContent=r.mode+" | "+r.name+" | UID: "+r.uid+" | "+r.date;
@@ -310,40 +351,61 @@ function loadHistory(){
 }
 
 function spin(){
+ if(spinning)return;
  let btn=document.getElementById("spin");
  let result=document.getElementById("result");
  let wheel=document.getElementById("wheel");
  let today=new Date().toDateString();
 
  if(localStorage.getItem("rawanLastSpin")===today){
- result.textContent="You have used today's free spin!";
- return;
+  result.textContent="You have used today's free spin!";
+  return;
  }
 
+ spinning=true;
  btn.disabled=true;
  result.textContent="🎡 Spinning...";
  wheel.style.transform="rotate(1800deg)";
 
  setTimeout(()=>{
- let n=Math.random()*100;
- let reward=0,message="😅 Better luck next time!";
- if(n>=35&&n<85){reward=2;message="🪙 You won 2 Coins!";}
- else if(n>=85&&n<99){reward=10;message="🪙 You won 10 Coins!";}
- else if(n>=99){reward=50;message="👑 JACKPOT! 50 Coins!";}
+  let n=Math.random()*100;
+  let reward=0;
+  let message="😅 Better luck next time!";
 
- balance+=reward;
- saveBalance();
- if(reward)addHistory(reward,message);
- localStorage.setItem("rawanLastSpin",today);
- result.textContent=message;
- btn.disabled=false;
+  if(n>=35&&n<85){
+   reward=2;
+   message="🪙 You won 2 Coins!";
+  } else if(n>=85&&n<99){
+   reward=10;
+   message="🪙 You won 10 Coins!";
+  } else if(n>=99){
+   reward=50;
+   message="👑 JACKPOT! 50 Coins!";
+  }
+
+  balance+=reward;
+  saveBalance();
+  if(reward)addHistory(reward,message);
+
+  localStorage.setItem("rawanLastSpin",today);
+  result.textContent=message;
+  btn.disabled=false;
+  spinning=false;
  },2000);
+}
+
+function openTelegram(url){
+ window.location.href=url;
 }
 
 saveBalance();
 loadProfile();
 loadHistory();
+
+if(localStorage.getItem("rawanLastSpin")===new Date().toDateString()){
+ document.getElementById("spin").disabled=true;
+ document.getElementById("result").textContent="Today's spin already used.";
+}
 </script>
 </body>
 </html>
-
