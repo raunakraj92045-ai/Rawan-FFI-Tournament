@@ -7,404 +7,738 @@
 <meta name="theme-color" content="#071426">
 <title>RAWAN FFI TOURNAMENT</title>
 <style>
+:root{--bg:#071426;--panel:#102746;--blue:#16baff;--cyan:#35c8ff;--gold:#ffca3a}
 *{box-sizing:border-box}
-body{margin:0;background:#071426;color:white;font-family:Arial,sans-serif}
-header{text-align:center;padding:20px 10px;background:linear-gradient(135deg,#092b55,#0759a8);border-bottom:2px solid #16baff}
-header h1{color:#35c8ff;font-size:23px;margin:5px}
-header p{font-size:12px}
-section{margin:14px;padding:17px;background:#102746;border:1px solid #1764a5;border-radius:13px}
-h2{color:#36c5ff;margin-top:0}
-button{background:linear-gradient(90deg,#0759a8,#16baff);border:1px solid #35c8ff;color:white;padding:13px;border-radius:9px;font-weight:bold;font-size:14px;cursor:pointer}
+body{margin:0;background:var(--bg);color:white;font-family:Arial,sans-serif}
+header{padding:12px 14px;background:linear-gradient(135deg,#092b55,#0759a8);border-bottom:2px solid var(--blue);display:flex;align-items:center;justify-content:space-between;gap:10px}
+.brand{font-weight:900;color:var(--cyan);font-size:18px}
+.tag{font-size:10px;color:#d7efff;margin-top:4px}
+.topcoin{border:1px solid var(--cyan);border-radius:30px;padding:6px 11px;background:#071b36;color:var(--gold);font-weight:bold}
+nav{display:flex;gap:5px;overflow-x:auto;padding:8px;background:#081a30;position:sticky;top:0;z-index:5}
+button{border:1px solid #35c8ff;background:linear-gradient(90deg,#0759a8,#0879b8);color:white;padding:10px 12px;border-radius:9px;font-weight:bold;font-size:13px;cursor:pointer}
 button:disabled{opacity:.5}
-.buttons{display:flex;gap:8px;flex-wrap:wrap}
-.buttons button{flex:1;min-width:90px}
-input{width:100%;padding:13px;margin:8px 0 15px;background:#071426;border:1px solid #2585c5;border-radius:8px;color:white}
-label{font-size:14px;color:#bce5ff}
-.page{display:none}
+.navbtn{min-width:70px;flex:1;padding:9px 8px;font-size:12px}
+.navbtn.active{background:linear-gradient(90deg,#0876d5,#16baff)}
+.green{background:linear-gradient(90deg,#087b35,#16bd62);border-color:#20df76}
+.red{background:linear-gradient(90deg,#8d111b,#d52b36);border-color:#ff5962}
+.gray{background:#244766;border-color:#47708e}
+.page{display:none;padding-bottom:20px}
 .page.active{display:block}
-.back{background:#245078;margin:14px}
-.card{background:#091c34;padding:14px;border:1px solid #2675ad;border-radius:10px;margin:10px 0}
-.coin{text-align:center;font-size:45px;color:#ffbd25}
-.wallet{text-align:center;background:linear-gradient(135deg,#173d68,#0759a8);padding:22px;border-radius:14px}
-.balance{font-size:35px;color:#ffce45;font-weight:bold}
-.warning{background:#310c0c;border:1px solid #e33;line-height:1.6}
-.warning h2{color:#ff5555}
-.wheel{font-size:90px;text-align:center;transition:transform 2s}
-.small{font-size:12px;color:#a8c7df}
-footer{text-align:center;padding:20px;color:#8ebce5}
-.msg{color:#36c5ff;text-align:center}
-.nav{display:flex;gap:6px;overflow-x:auto;padding:10px}
-.nav button{min-width:75px;font-size:12px;padding:10px}
+section{margin:10px 12px;padding:12px;background:linear-gradient(145deg,#102e50,#0b203a);border:1px solid #1764a5;border-radius:12px}
+h2{font-size:16px;color:var(--cyan);margin:0 0 10px}
+h3{font-size:14px;margin:4px 0 8px;color:#d7efff}
+p{margin:7px 0;font-size:13px;line-height:1.4}
+.small{font-size:11px;color:#a8c7df}
+.row{display:flex;align-items:center;gap:8px}
+.between{justify-content:space-between}
+.grow{flex:1}
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:7px}
+.grid3 button{padding:12px 4px}
+.card{background:#091c34;padding:10px;border:1px solid #2675ad;border-radius:10px;margin:8px 0}
+input,select{width:100%;padding:11px;margin:5px 0 10px;background:#071426;border:1px solid #2585c5;border-radius:8px;color:white;font-size:14px}
+label{font-size:12px;color:#bce5ff}
+form button{width:100%}
+.walletmini{display:flex;align-items:center;justify-content:space-between;gap:10px}
+.coinicon{font-size:27px}
+.balance{font-size:22px;color:var(--gold);font-weight:900}
+.warning{background:linear-gradient(120deg,#390b12,#6e111b);border:1px solid #ed3b48}
+.warning h2{color:#ff777e}
+.banner{padding:15px;text-align:center;border-radius:10px;background:linear-gradient(120deg,#092b55,#0759a8);border:1px solid var(--cyan);font-weight:bold}
+.msg{color:#42d4ff;text-align:center;min-height:16px}
+.pill{display:inline-block;padding:4px 8px;border-radius:20px;background:#123e65;font-size:11px;color:#bce5ff}
+.actions{display:flex;gap:7px;flex-wrap:wrap}
+.actions button{flex:1;min-width:90px}
+footer{text-align:center;color:#83acd0;font-size:11px;padding:18px}
+hr{border:0;border-top:1px solid #245078;margin:10px 0}
+@media(min-width:650px){
+main{max-width:620px;margin:auto}
+header,nav{padding-left:max(14px,calc((100% - 620px)/2));padding-right:max(14px,calc((100% - 620px)/2))}
+}
 </style>
 </head>
 <body>
 
 <header>
-<h1>🔥 RAWAN FFI TOURNAMENT 🔥</h1>
-<p>PLAY FAIR • WIN FAIR</p>
+<div>
+<div class="brand">🔥 RAWAN FFI TOURNAMENT 🔥</div>
+<div class="tag">PLAY FAIR • WIN FAIR</div>
+</div>
+<div class="topcoin">🪙 R <span id="topBalance">0</span></div>
 </header>
 
-<nav class="nav">
-<button onclick="showPage('home')">🏠 Home</button>
-<button onclick="showPage('wallet')">🪙 Wallet</button>
-<button onclick="showPage('profile')">👤 Profile</button>
-<button onclick="showPage('history')">📋 History</button>
+<nav>
+<button class="navbtn active" data-page="home" onclick="showPage('home')">🏠 Home</button>
+<button class="navbtn" data-page="wallet" onclick="showPage('wallet')">🪙 Wallet</button>
+<button class="navbtn" data-page="profile" onclick="showPage('profile')">👤 Profile</button>
+<button class="navbtn" data-page="history" onclick="showPage('history')">📋 History</button>
+<button class="navbtn" data-page="admin" onclick="showPage('admin')">👑 Admin</button>
 </nav>
 
-<!-- HOME -->
+<main>
+
 <div id="home" class="page active">
+
+<section class="banner">
+🏆 FREE FIRE TOURNAMENT
+<br><span class="small">RAWAN FFI • PLAY FAIR • WIN FAIR</span>
+</section>
 
 <section>
 <h2>🏆 Tournament Modes</h2>
-<div class="buttons">
-<button onclick="openMode('SOLO')">SOLO</button>
-<button onclick="openMode('DUO')">DUO</button>
-<button onclick="openMode('SQUAD')">SQUAD</button>
+<div class="grid3">
+<button class="green" onclick="openMode('SOLO')">👤 SOLO</button>
+<button class="green" onclick="openMode('DUO')">👥 DUO</button>
+<button class="green" onclick="openMode('SQUAD')">👨‍👨‍👦 SQUAD</button>
 </div>
-<p>Free tournaments | Match updates soon</p>
+<p class="small">Free tournaments • Match details are shown below</p>
 </section>
 
 <section>
+<div class="row between">
 <h2>👤 Player Account</h2>
-<div class="coin">👤</div>
-<p style="text-align:center" id="homeName">Player</p>
-<button style="width:100%" onclick="showPage('profile')">VIEW / EDIT PROFILE</button>
+<span class="pill">PLAYER</span>
+</div>
+<div class="row between">
+<div>
+<b id="homeName">Player</b>
+<p class="small" id="homeUid">Add your UID in Profile</p>
+</div>
+<button class="green" onclick="showPage('profile')">EDIT PROFILE</button>
+</div>
 </section>
 
 <section>
+<div class="walletmini">
+<div>
 <h2>🪙 R Coin Wallet</h2>
-<div class="wallet">
-<div class="coin">🪙</div>
-<div class="balance" id="homeBalance">0</div>
-<p>R COINS</p>
-<button onclick="showPage('wallet')">OPEN WALLET</button>
+<p class="small">Your available non-cash coins</p>
 </div>
+<div class="balance">R <span id="homeBalance">0</span></div>
+</div>
+<button class="green" style="width:100%" onclick="showPage('wallet')">OPEN WALLET</button>
 </section>
 
 <section class="warning">
 <h2>🚨 IMPORTANT WARNING</h2>
-No hacks, panels or macros allowed.
-Cheating means disqualification.
-<hr>
-हैक, पैनल और मैक्रो का इस्तेमाल मना है।
+<p>No hacks, panels, macros or unfair tools. Cheating means disqualification.</p>
+<p>हैक, पैनल और मैक्रो का इस्तेमाल मना है।</p>
 </section>
 
 <section>
 <h2>🎡 Lucky Spinner</h2>
-<div class="wheel" id="wheel">🎡</div>
-<button id="spin" style="width:100%" onclick="spin()">SPIN NOW</button>
-<p id="result" class="msg">Good luck!</p>
-<p class="small">One free spin per day. Coins are non-cash rewards.</p>
+<div class="row between">
+<div style="font-size:36px">🎡</div>
+<div class="grow">
+<button class="green" id="spinBtn" style="width:100%" onclick="spin()">SPIN NOW</button>
+<p id="spinResult" class="msg">Good luck!</p>
+</div>
+</div>
+<p class="small">One free spin per day. Virtual coins have no cash value.</p>
 </section>
 
 <section>
-<h2>📋 My Registrations</h2>
-<button style="width:100%" onclick="showPage('history')">VIEW REGISTRATION HISTORY</button>
+<div class="row between">
+<h2>🎮 Available Tournaments</h2>
+<span class="pill" id="tourCount">0</span>
+</div>
+<div id="homeTournaments"></div>
 </section>
 
 <section>
 <h2>📜 Game Rules</h2>
-1. Enter correct Free Fire UID.<br><br>
-2. One registration per player.<br><br>
-3. Be online at match time.<br><br>
-4. No hacks or unfair tools.<br><br>
-5. Admin verifies match results.
+<p>1. Enter correct Free Fire UID.</p>
+<p>2. One registration per player per tournament.</p>
+<p>3. Be online at match time.</p>
+<p>4. No hacks or unfair tools.</p>
+<p>5. Admin verifies match results.</p>
 </section>
 
 <section>
 <h2>📢 Telegram Support</h2>
-<div class="buttons">
-<button onclick="openTelegram('https://t.me/Rawanffitournament14')">💬 CONTACT ADMIN</button>
-<button onclick="openTelegram('https://t.me/Rawanffitournamentgroup_14')">👥 JOIN GROUP</button>
+<div class="actions">
+<button onclick="openTelegram('https://t.me/Rawanffitournament14')">CONTACT ADMIN</button>
+<button onclick="openTelegram('https://t.me/Rawanffitournamentgroup_14')">JOIN GROUP</button>
 </div>
 </section>
+
 </div>
 
-<!-- WALLET -->
 <div id="wallet" class="page">
-<button class="back" onclick="showPage('home')">⬅ BACK HOME</button>
 <section>
 <h2>🪙 MY R COIN WALLET</h2>
-<div class="wallet">
-<div class="coin">🪙 R</div>
-<div class="balance" id="walletBalance">0</div>
-<p>AVAILABLE COINS</p>
+<div class="row between">
+<div>
+<p class="small">Available coins</p>
+<b class="balance" id="walletBalance">0 R</b>
 </div>
-<div class="card">
-<h3>🎡 Earn Coins</h3>
-<p>Try your free daily spinner.</p>
-<button style="width:100%" onclick="showPage('home')">GO TO SPINNER</button>
+<div class="coinicon">🪙</div>
 </div>
-<h3>📜 Coin History</h3>
+<p class="small">Your balance is also shown in the top bar.</p>
+</section>
+<section>
+<h2>📜 Coin History</h2>
 <div id="coinHistory">No transactions yet.</div>
-<p class="small">Non-transferable, non-cash coins.</p>
 </section>
 </div>
 
-<!-- MODE -->
 <div id="mode" class="page">
-<button class="back" onclick="showPage('home')">⬅ BACK HOME</button>
 <section>
+<button class="gray" onclick="showPage('home')">← BACK</button>
 <h2 id="modeTitle">TOURNAMENT</h2>
-<div class="card">
-<p>👥 Players: <b id="players"></b></p>
-<p>🎟️ Entry: Free</p>
-<p>📅 Date: To be announced</p>
-<p>⏰ Time: To be announced</p>
-<button style="width:100%" onclick="openRegistration()">REGISTER NOW</button>
-</div>
+<div id="modeTournaments"></div>
 </section>
 </div>
 
-<!-- REGISTRATION -->
 <div id="registration" class="page">
-<button class="back" onclick="showPage('mode')">⬅ BACK</button>
 <section>
-<h2>📝 Registration</h2>
+<button class="gray" onclick="showPage('home')">← BACK</button>
+<h2>📝 Tournament Registration</h2>
 <p>Mode: <b id="regMode"></b></p>
 <form id="regForm">
+<input type="hidden" id="regTournamentId">
 <label>Player Name</label>
-<input id="regName" required maxlength="40">
-<label>Free Fire UID</label>
-<input id="regUID" required inputmode="numeric" maxlength="20">
-<button style="width:100%">SUBMIT REGISTRATION</button>
+<input id="regName" maxlength="40" required>
+<label>Free Fire UID (numbers only)</label>
+<input id="regUID" inputmode="numeric" maxlength="20" required>
+<button class="green">SUBMIT REGISTRATION</button>
 </form>
-<p class="small">Registration is saved only on this device. Admin confirmation is required.</p>
+<p class="small">Registration is stored on this device in this starter version.</p>
 </section>
 </div>
 
-<!-- PROFILE -->
 <div id="profile" class="page">
-<button class="back" onclick="showPage('home')">⬅ BACK HOME</button>
 <section>
 <h2>👤 EDIT PLAYER PROFILE</h2>
 <form id="profileForm">
 <label>Player Name</label>
-<input id="pName" required maxlength="40">
+<input id="pName" maxlength="40" required>
 <label>Free Fire UID</label>
-<input id="pUID" required maxlength="20" inputmode="numeric">
-<label>In-Game Name</label>
+<input id="pUID" inputmode="numeric" maxlength="20" required>
+<label>In-Game Name (optional)</label>
 <input id="pIGN" maxlength="40">
-<button style="width:100%">💾 SAVE PROFILE</button>
+<button class="green">SAVE PROFILE</button>
 </form>
 <p id="profileMsg" class="msg"></p>
 </section>
 </div>
 
-<!-- HISTORY -->
 <div id="history" class="page">
-<button class="back" onclick="showPage('home')">⬅ BACK HOME</button>
 <section>
 <h2>📋 MY REGISTRATIONS</h2>
 <div id="historyList"></div>
 </section>
 </div>
 
-<footer>© RAWAN FFI TOURNAMENT</footer>
+<div id="admin" class="page">
+<section>
+<h2>👑 ADMIN PANEL</h2>
+
+<div id="adminLogin">
+<p class="small">Local demo lock only. This is not secure online authentication.</p>
+<label>Admin PIN</label>
+<input id="adminPin" type="password" inputmode="text" placeholder="Enter your PIN">
+<button class="green" style="width:100%" onclick="adminLogin()">ADMIN LOGIN</button>
+<p id="adminMsg" class="msg"></p>
+</div>
+
+<div id="adminArea" style="display:none">
+
+<div class="row between">
+<b>Admin controls</b>
+<button class="gray" onclick="adminLogout()">LOG OUT</button>
+</div>
+
+<hr>
+<h3>➕ Add / Update Tournament</h3>
+
+<form id="tourForm">
+<input type="hidden" id="tourId">
+<label>Tournament Name</label>
+<input id="tourName" placeholder="Example: Friday Solo Room" required>
+<label>Mode</label>
+<select id="tourMode">
+<option>SOLO</option>
+<option>DUO</option>
+<option>SQUAD</option>
+</select>
+<label>Date</label>
+<input id="tourDate" type="date">
+<label>Time</label>
+<input id="tourTime" type="time">
+<label>Entry information</label>
+<input id="tourEntry" value="Free">
+<label>Room ID</label>
+<input id="tourRoom" placeholder="Room ID">
+<label>Room Password</label>
+<input id="tourPassword" placeholder="Room password">
+<label>Status</label>
+<select id="tourStatus">
+<option>Open</option>
+<option>Full</option>
+<option>Completed</option>
+</select>
+<button class="green">SAVE TOURNAMENT</button>
+</form>
+
+<div id="adminTours"></div>
+
+<hr>
+<h3>🪙 Add / Deduct Coins</h3>
+<label>Player UID</label>
+<input id="coinUid" inputmode="numeric" placeholder="Player UID">
+<label>Amount</label>
+<input id="coinAmount" type="number" min="1" placeholder="Coins">
+<div class="actions">
+<button class="green" onclick="adminCoins(1)">ADD COINS</button>
+<button class="red" onclick="adminCoins(-1)">DEDUCT COINS</button>
+</div>
+<p id="coinAdminMsg" class="msg"></p>
+
+<hr>
+<h3>📝 Player Registrations</h3>
+<div id="adminRegistrations"></div>
+
+</div>
+</section>
+</div>
+
+<footer>© RAWAN FFI TOURNAMENT • Virtual coins are non-cash rewards</footer>
+</main>
 
 <script>
 "use strict";
 
+const ADMIN_PIN = "RAWAN@2026";
 let balance = Math.max(0,Number(localStorage.getItem("rawanCoins"))||0);
-let selectedMode = "SOLO";
-let spinning = false;
+let selectedMode="SOLO";
+let spinning=false;
+let adminUnlocked=false;
 
-function getData(key,def){
- try {
+const $ = id => document.getElementById(id);
+
+function read(key,fallback){
+ try{
   const v=localStorage.getItem(key);
-  return v===null?def:JSON.parse(v);
- } catch(e){return def;}
+  return v===null?fallback:JSON.parse(v);
+ }catch(e){return fallback}
 }
 
-function setData(key,value){
- try {
+function write(key,value){
+ try{
   localStorage.setItem(key,JSON.stringify(value));
   return true;
- } catch(e){
-  alert("Storage error! Please check phone storage.");
+ }catch(e){
+  alert("Could not save. Check device storage.");
   return false;
  }
 }
 
 function showPage(id){
- const page=document.getElementById(id);
- if(!page)return;
  document.querySelectorAll(".page").forEach(p=>p.classList.remove("active"));
- page.classList.add("active");
+ $(id).classList.add("active");
+ document.querySelectorAll(".navbtn").forEach(b=>b.classList.toggle("active",b.dataset.page===id));
  window.scrollTo(0,0);
+
  if(id==="wallet")updateWallet();
- if(id==="history")loadHistory();
  if(id==="profile")loadProfile();
+ if(id==="history")loadHistory();
+ if(id==="admin")renderAdmin();
+}
+
+function profile(){
+ return read("rawanProfile",{});
 }
 
 function saveBalance(){
  localStorage.setItem("rawanCoins",String(balance));
- document.getElementById("homeBalance").textContent=balance;
- document.getElementById("walletBalance").textContent=balance;
+ $("topBalance").textContent=balance;
+ $("homeBalance").textContent=balance;
+ $("walletBalance").textContent=balance+" R";
 }
 
-function addHistory(amount,message){
- let h=getData("rawanCoinHistory",[]);
+function addCoinHistory(amount,message){
+ let h=read("rawanCoinHistory",[]);
  h.push({amount,message,date:new Date().toLocaleString()});
- setData("rawanCoinHistory",h);
+ write("rawanCoinHistory",h);
 }
 
 function updateWallet(){
  saveBalance();
- let h=getData("rawanCoinHistory",[]);
- let el=document.getElementById("coinHistory");
+ let h=read("rawanCoinHistory",[]);
+ let el=$("coinHistory");
  el.replaceChildren();
+
  if(!h.length){
   el.textContent="No transactions yet.";
   return;
  }
+
  h.slice().reverse().forEach(x=>{
   let d=document.createElement("div");
   d.className="card";
-  d.textContent=x.message+" | "+x.date;
+  d.textContent=(x.amount>0?"+":"")+x.amount+" R • "+x.message+" • "+x.date;
   el.appendChild(d);
  });
 }
 
+function loadProfile(){
+ let p=profile();
+ $("pName").value=p.name||"";
+ $("pUID").value=p.uid||"";
+ $("pIGN").value=p.ign||"";
+ $("homeName").textContent=p.name||"Player";
+ $("homeUid").textContent=p.uid?"UID: "+p.uid:"Add your UID in Profile";
+}
+
+$("profileForm").addEventListener("submit",e=>{
+ e.preventDefault();
+
+ let p={
+  name:$("pName").value.trim(),
+  uid:$("pUID").value.trim(),
+  ign:$("pIGN").value.trim()
+ };
+
+ if(!p.name||!/^[0-9]+$/.test(p.uid)){
+  $("profileMsg").textContent="Enter name and a numeric UID.";
+  return;
+ }
+
+ if(write("rawanProfile",p)){
+  $("profileMsg").textContent="✅ Profile saved!";
+  loadProfile();
+ }
+});
+
+function getTours(){
+ return read("rawanTournaments",[]);
+}
+
+function renderTours(){
+ let tours=getTours();
+ let home=$("homeTournaments");
+ $("tourCount").textContent=tours.length;
+ home.replaceChildren();
+
+ if(!tours.length){
+  home.textContent="No tournaments announced yet.";
+  return;
+ }
+
+ tours.forEach(t=>home.appendChild(tourCard(t,false)));
+}
+
+function tourCard(t,admin){
+ let d=document.createElement("div");
+ d.className="card";
+
+ let title=document.createElement("b");
+ title.textContent=t.name+" • "+t.mode;
+ d.appendChild(title);
+
+ let p=document.createElement("p");
+ p.textContent="📅 "+(t.date||"To be announced")+" ⏰ "+(t.time||"To be announced")+" • Entry: "+(t.entry||"Free")+" • "+(t.status||"Open");
+ d.appendChild(p);
+
+ if(t.room||t.password){
+  let r=document.createElement("p");
+  r.textContent="Room ID: "+(t.room||"Not shared")+" | Password: "+(t.password||"Not shared");
+  d.appendChild(r);
+ }
+
+ let b=document.createElement("button");
+ b.className="green";
+ b.textContent="REGISTER";
+ b.onclick=()=>startRegistration(t);
+ d.appendChild(b);
+
+ if(admin){
+  let edit=document.createElement("button");
+  edit.className="gray";
+  edit.style.marginLeft="5px";
+  edit.textContent="EDIT";
+  edit.onclick=()=>editTour(t.id);
+  d.appendChild(edit);
+
+  let del=document.createElement("button");
+  del.className="red";
+  del.style.marginLeft="5px";
+  del.textContent="DELETE";
+  del.onclick=()=>deleteTour(t.id);
+  d.appendChild(del);
+ }
+
+ return d;
+}
+
 function openMode(mode){
  selectedMode=mode;
- document.getElementById("modeTitle").textContent="🏆 "+mode+" TOURNAMENT";
- document.getElementById("players").textContent=
- mode==="SOLO"?"1":mode==="DUO"?"2":"4";
+ $("modeTitle").textContent="🏆 "+mode+" TOURNAMENTS";
+
+ let el=$("modeTournaments");
+ el.replaceChildren();
+
+ let ts=getTours().filter(t=>t.mode===mode);
+
+ if(!ts.length){
+  el.textContent="No "+mode+" tournaments available yet.";
+ }else{
+  ts.forEach(t=>el.appendChild(tourCard(t,false)));
+ }
+
  showPage("mode");
 }
 
-function openRegistration(){
- document.getElementById("regMode").textContent=selectedMode;
- let p=getData("rawanProfile",{});
- document.getElementById("regName").value=p.name||"";
- document.getElementById("regUID").value=p.uid||"";
+function startRegistration(t){
+ selectedMode=t.mode;
+ $("regMode").textContent=t.mode+" • "+t.name;
+ $("regTournamentId").value=t.id;
+
+ let p=profile();
+ $("regName").value=p.name||"";
+ $("regUID").value=p.uid||"";
+
  showPage("registration");
 }
 
-document.getElementById("profileForm").addEventListener("submit",e=>{
+$("regForm").addEventListener("submit",e=>{
  e.preventDefault();
- let p={
-  name:document.getElementById("pName").value.trim(),
-  uid:document.getElementById("pUID").value.trim(),
-  ign:document.getElementById("pIGN").value.trim()
- };
- if(!p.name||!p.uid){
-  alert("Please enter your name and UID.");
-  return;
- }
- if(!/^[0-9]+$/.test(p.uid)){
-  alert("UID must contain numbers only.");
-  return;
- }
- if(!setData("rawanProfile",p))return;
- document.getElementById("profileMsg").textContent="✅ Profile saved!";
- loadProfile();
-});
 
-function loadProfile(){
- let p=getData("rawanProfile",{});
- document.getElementById("pName").value=p.name||"";
- document.getElementById("pUID").value=p.uid||"";
- document.getElementById("pIGN").value=p.ign||"";
- document.getElementById("homeName").textContent=p.name||"Player";
-}
-
-document.getElementById("regForm").addEventListener("submit",e=>{
- e.preventDefault();
  let r={
+  id:Date.now().toString(),
+  tournamentId:$("regTournamentId").value,
   mode:selectedMode,
-  name:document.getElementById("regName").value.trim(),
-  uid:document.getElementById("regUID").value.trim(),
+  name:$("regName").value.trim(),
+  uid:$("regUID").value.trim(),
   date:new Date().toLocaleString()
  };
+
  if(!r.name||!/^[0-9]+$/.test(r.uid)){
-  alert("Enter a valid name and numeric UID.");
+  alert("Enter a name and numeric UID.");
   return;
  }
- let records=getData("rawanRegistrations",[]);
- if(records.some(x=>x.uid===r.uid)){
-  alert("This UID is already registered on this device!");
+
+ let records=read("rawanRegistrations",[]);
+
+ if(records.some(x=>x.uid===r.uid&&x.tournamentId===r.tournamentId)){
+  alert("This UID is already registered for this tournament.");
   return;
  }
+
  records.push(r);
- if(!setData("rawanRegistrations",records))return;
- alert("Registration saved! Admin confirmation is required.");
- showPage("history");
+
+ if(write("rawanRegistrations",records)){
+  alert("Registration saved on this device.");
+  showPage("history");
+ }
 });
 
 function loadHistory(){
- let records=getData("rawanRegistrations",[]);
- let el=document.getElementById("historyList");
+ let rs=read("rawanRegistrations",[]);
+ let el=$("historyList");
  el.replaceChildren();
- if(!records.length){
+
+ if(!rs.length){
   el.textContent="No registrations yet.";
   return;
  }
- records.slice().reverse().forEach(r=>{
+
+ rs.slice().reverse().forEach(r=>{
   let d=document.createElement("div");
   d.className="card";
-  d.textContent=r.mode+" | "+r.name+" | UID: "+r.uid+" | "+r.date;
+  d.textContent=r.mode+" • "+r.name+" • UID: "+r.uid+" • "+r.date;
   el.appendChild(d);
  });
 }
 
 function spin(){
  if(spinning)return;
- let btn=document.getElementById("spin");
- let result=document.getElementById("result");
- let wheel=document.getElementById("wheel");
+
  let today=new Date().toDateString();
 
  if(localStorage.getItem("rawanLastSpin")===today){
-  result.textContent="You have used today's free spin!";
+  $("spinResult").textContent="Today's free spin is already used.";
   return;
  }
 
  spinning=true;
- btn.disabled=true;
- result.textContent="🎡 Spinning...";
- wheel.style.transform="rotate(1800deg)";
+ $("spinBtn").disabled=true;
+ $("spinResult").textContent="🎡 Spinning...";
 
  setTimeout(()=>{
   let n=Math.random()*100;
   let reward=0;
-  let message="😅 Better luck next time!";
+  let msg="😅 Better luck next time!";
 
   if(n>=35&&n<85){
    reward=2;
-   message="🪙 You won 2 Coins!";
-  } else if(n>=85&&n<99){
+   msg="🪙 You won 2 coins!";
+  }else if(n>=85&&n<99){
    reward=10;
-   message="🪙 You won 10 Coins!";
-  } else if(n>=99){
+   msg="🪙 You won 10 coins!";
+  }else if(n>=99){
    reward=50;
-   message="👑 JACKPOT! 50 Coins!";
+   msg="👑 Jackpot! 50 coins!";
   }
 
   balance+=reward;
   saveBalance();
-  if(reward)addHistory(reward,message);
+
+  if(reward)addCoinHistory(reward,msg);
 
   localStorage.setItem("rawanLastSpin",today);
-  result.textContent=message;
-  btn.disabled=false;
+  $("spinResult").textContent=msg;
+  $("spinBtn").disabled=false;
   spinning=false;
- },2000);
+
+ },1400);
 }
 
 function openTelegram(url){
- window.location.href=url;
+ window.open(url,"_blank","noopener");
 }
 
-saveBalance();
-loadProfile();
-loadHistory();
-
-if(localStorage.getItem("rawanLastSpin")===new Date().toDateString()){
- document.getElementById("spin").disabled=true;
- document.getElementById("result").textContent="Today's spin already used.";
+function adminLogin(){
+ if($("adminPin").value===ADMIN_PIN){
+  adminUnlocked=true;
+  $("adminLogin").style.display="none";
+  $("adminArea").style.display="block";
+  $("adminMsg").textContent="";
+  renderAdmin();
+ }else{
+  $("adminMsg").textContent="Incorrect PIN.";
+ }
 }
+
+function adminLogout(){
+ adminUnlocked=false;
+ $("adminLogin").style.display="block";
+ $("adminArea").style.display="none";
+ $("adminPin").value="";
+}
+
+function renderAdmin(){
+ if(!adminUnlocked)return;
+
+ $("adminTours").replaceChildren();
+ getTours().forEach(t=>$("adminTours").appendChild(tourCard(t,true)));
+
+ let el=$("adminRegistrations");
+ el.replaceChildren();
+
+ let rs=read("rawanRegistrations",[]);
+
+ if(!rs.length){
+  el.textContent="No registrations yet.";
+  return;
+ }
+
+ rs.slice().reverse().forEach(r=>{
+  let d=document.createElement("div");
+  d.className="card";
+  d.textContent=r.mode+" • "+r.name+" • UID "+r.uid+" • "+r.date;
+  el.appendChild(d);
+ });
+}
+
+$("tourForm").addEventListener("submit",e=>{
+ e.preventDefault();
+ if(!adminUnlocked)return;
+
+ let id=$("tourId").value||Date.now().toString();
+
+ let t={
+  id,
+  name:$("tourName").value.trim(),
+  mode:$("tourMode").value,
+  date:$("tourDate").value,
+  time:$("tourTime").value,
+  entry:$("tourEntry").value.trim(),
+  room:$("tourRoom").value.trim(),
+  password:$("tourPassword").value.trim(),
+  status:$("tourStatus").value
+ };
+
+ let ts=getTours();
+ let i=ts.findIndex(x=>x.id===id);
+
+ if(i>=0)ts[i]=t;
+ else ts.push(t);
+
+ if(write("rawanTournaments",ts)){
+  $("tourForm").reset();
+  $("tourId").value="";
+  $("tourEntry").value="Free";
+  renderAdmin();
+  renderTours();
+  alert("Tournament saved.");
+ }
+});
+
+function editTour(id){
+ let t=getTours().find(x=>x.id===id);
+ if(!t)return;
+
+ $("tourId").value=t.id;
+ $("tourName").value=t.name;
+ $("tourMode").value=t.mode;
+ $("tourDate").value=t.date||"";
+ $("tourTime").value=t.time||"";
+ $("tourEntry").value=t.entry||"Free";
+ $("tourRoom").value=t.room||"";
+ $("tourPassword").value=t.password||"";
+ $("tourStatus").value=t.status||"Open";
+
+ window.scrollTo(0,0);
+}
+
+function deleteTour(id){
+ if(!confirm("Delete this tournament?"))return;
+
+ write("rawanTournaments",getTours().filter(t=>t.id!==id));
+ renderAdmin();
+ renderTours();
+}
+
+function adminCoins(sign){
+ if(!adminUnlocked)return;
+
+ let uid=$("coinUid").value.trim();
+ let amount=Number($("coinAmount").value);
+
+ if(!uid||!Number.isFinite(amount)||amount<=0){
+  $("coinAdminMsg").textContent="Enter UID and a positive amount.";
+  return;
+ }
+
+ if(sign<0&&amount>balance){
+  $("coinAdminMsg").textContent="Not enough coins in this device wallet.";
+  return;
+ }
+
+ balance=Math.max(0,balance+sign*amount);
+ saveBalance();
+
+ addCoinHistory(
+  sign*amount,
+  (sign>0?"Admin added coins for UID ":"Admin deducted coins for UID ")+uid
+ );
+
+ $("coinAdminMsg").textContent="Updated this device wallet. This is not a player-wide online balance.";
+}
+
+function init(){
+ saveBalance();
+ loadProfile();
+ renderTours();
+
+ if(localStorage.getItem("rawanLastSpin")===new Date().toDateString()){
+  $("spinBtn").disabled=true;
+  $("spinResult").textContent="Today's spin already used.";
+ }
+}
+
+init();
 </script>
 </body>
 </html>
