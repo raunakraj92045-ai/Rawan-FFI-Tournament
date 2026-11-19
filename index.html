@@ -312,6 +312,22 @@ header,nav{padding-left:max(14px,calc((100% - 620px)/2));padding-right:max(14px,
 <script>
 "use strict";
 
+const firebaseConfig = {
+  apiKey: "AIzaSyCPkx8EDKsrhPbo0zy1aa_miUm5ThH3KK0",
+  authDomain: "rawan-ffi-tournament-2026.firebaseapp.com",
+  databaseURL: "https://rawan-ffi-tournament-2026-default-rtdb.firebaseio.com",
+  projectId: "rawan-ffi-tournament-2026",
+  storageBucket: "rawan-ffi-tournament-2026.firebasestorage.app",
+  messagingSenderId: "339728481595",
+  appId: "1:339728481595:web:2d7abce5497c8481764b1e",
+  measurementId: "G-0D5QVWMDMG"
+};
+
+firebase.initializeApp(firebaseConfig);
+
+const auth = firebase.auth();
+const database = firebase.database();
+
 const ADMIN_PIN = "RAWAN@2026";
 let balance = Math.max(0,Number(localStorage.getItem("rawanCoins"))||0);
 let selectedMode="SOLO";
